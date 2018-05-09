@@ -4,7 +4,13 @@ import { Button, Form } from "semantic-ui-react";
 
 export default class BasicSortForm extends Component {
   state = {
-    value: 1000,
+    value: 50,
+  };
+
+  handleChange = ev => {
+    let { value, name, type } = ev.target;
+    if (type === 'number') value = parseFloat(value);
+    this.setState({ [name]: value });
   };
 
   render() {
@@ -31,7 +37,7 @@ export default class BasicSortForm extends Component {
           />
           <Button 
             color="orange"
-            onClick={handleGenColors}
+            onClick={handleGenColors.bind(this, value)}
             content="Generate"
           />
           <Button 
@@ -42,7 +48,7 @@ export default class BasicSortForm extends Component {
 
           <Button primary onClick={handleSortColors} content="Sort Colors" />
           <Button primary onClick={handleSortColorsLive} content="Sort Colors Live" />
-          </Form.Field>
+        </Form.Group>
       </Form>
     );
   }

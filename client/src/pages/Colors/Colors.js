@@ -36,7 +36,7 @@ export default class BasicQS extends Component {
 
   updateColors = (colors) => this.setState({ colors }, this.updatePlot);
 
-  handleGenColor = increment => {
+  handleGenColors = increment => {
     let colors = new ColorList(0, 250, null, increment);
     this.setState({ colors }, this.updatePlot);
   }
@@ -104,6 +104,7 @@ export default class BasicQS extends Component {
         <ColorsSortForm
           handleSortColors={this.handleSortColors}
           handleSortColorsLive={this.handleSortColorsLive}
+          handleGenColors={this.handleGenColors}
           handleRandomColors={this.handleRandomColors}
         />
       </Section.Footer>
