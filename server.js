@@ -8,7 +8,10 @@ const path = require("path");
 // create server
 //--------------------------------------------------------
 app.use(express.static(path.join(__dirname, "client/build/")));
-console.log(PORT);
+app.get("/", (req,res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+})
+
 // start server
 //--------------------------------------------------------
 app.listen(PORT, () => {
