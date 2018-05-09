@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { Grid } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { BasicQS, ColorsQS } from "./pages";
+import { Home, BasicQS, ColorsQS } from "./pages";
 
 class App extends Component {
   render() {
@@ -17,8 +17,9 @@ class App extends Component {
               </Grid.Column>
               <Grid.Column width={13}>
                 <Switch>
-                  <Route path="/quick-sort-basic" component={BasicQS} />
-                  <Route path="/quick-sort-colors" component={ColorsQS} />
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/quick-sort-basic" component={BasicQS} />
+                  <Route exact path="/quick-sort-colors" component={ColorsQS} />
                 </Switch>
               </Grid.Column>
             </Grid.Row>

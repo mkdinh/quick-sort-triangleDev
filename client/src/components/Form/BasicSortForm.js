@@ -15,7 +15,6 @@ export default class BasicSortForm extends Component {
   render() {
     let { value } = this.state;
     let { 
-      completed, 
       handleSort, 
       handleSortLive, 
       handleGenerateRandom 

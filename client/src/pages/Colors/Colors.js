@@ -36,6 +36,11 @@ export default class BasicQS extends Component {
 
   updateColors = (colors) => this.setState({ colors }, this.updatePlot);
 
+  handleGenColor = increment => {
+    let colors = new ColorList(0, 250, null, increment);
+    this.setState({ colors }, this.updatePlot);
+  }
+
   handleRandomColors = () => {
     let randomized = this.state.colors.RandomizeCoordinates();
     this.setState({ colors: randomized }, this.updatePlot);
