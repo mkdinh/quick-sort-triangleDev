@@ -9,45 +9,49 @@ export default class BasicSortForm extends Component {
 
   handleChange = ev => {
     let { value, name, type } = ev.target;
-    if (type === 'number') value = parseFloat(value);
+    if (type === "number") value = parseFloat(value);
     this.setState({ [name]: value });
   };
 
   render() {
     let { value } = this.state;
 
-    let {  
-      handleSortColors, 
+    let {
+      handleSortColors,
       handleSortColorsLive,
       handleGenColors,
-      handleRandomColors 
+      handleRandomColors,
     } = this.props;
 
     return (
       <Form>
-
         <Form.Group inline>
           <Form.Field
             value={value}
             name="value"
             type="number"
+            min={25}
             label="Increment"
             control="input"
             onChange={this.handleChange}
           />
-          <Button 
+          <Button
             color="orange"
             onClick={handleGenColors.bind(this, value)}
             content="Generate"
           />
-          <Button 
+          <Button
             color="orange"
             onClick={handleRandomColors}
             content="Randomize"
           />
 
           <Button primary onClick={handleSortColors} content="Sort Colors" />
-          <Button primary onClick={handleSortColorsLive} content="Sort Colors Live" />
+          <Button
+            primary
+            onClick={handleSortColorsLive}
+            content="Sort Colors Live"
+          />
         </Form.Group>
       </Form>
     );

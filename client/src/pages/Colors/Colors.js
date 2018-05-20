@@ -5,16 +5,36 @@ import Section from "../../components/Section";
 import plotly from "plotly.js/dist/plotly";
 import { ColorList } from "./quicksort";
 import { ColorsSortForm } from "../../components/Form";
-
+import io from "socket.io-client";
+let count = 0;
 export default class BasicQS extends Component {
+  constructor() {
+    super();
+
+    this.socket = io();
+
+    this.socket.on("connect", () => {
+      console.log("connect to websocket");
+    });
+    this.socket.on("update calculation", res => {
+      setTimeout(() => {
+        this.setState(
+          {
+            colors: new ColorList(0, 250, res.data.colors, res.data.increment),
+          },
+          this.updatePlot,
+        );
+      }, 0);
+    });
+  }
   state = {
     colors: new ColorList(0, 250, null, 50),
-    initColors: new ColorList(0, 250, null, 50),
   };
 
-  size = 4;
+  size = 7;
 
   componentDidMount() {
+    this.handleRandomColors();
     this.renderPlot();
   }
 
@@ -30,26 +50,23 @@ export default class BasicQS extends Component {
     let init = this.state.initColors.colors;
     let len = colors.length;
 
-    // for (let i = 0; i < len; i++) {
-    //   // console.log(
-    //   //   `sorted: ${colors[i].r} ${colors[i].g} ${colors[i].b} | init: ${
-    //   //     init[i].r
-    //   //   } ${init[i].g} ${init[i].b}`,
-    //   // );
-    //   console.log(
-    //     `sorted: ${colors[i].x} ${colors[i].y} ${colors[i].z} | init: ${
-    //       init[i].x
-    //     } ${init[i].y} ${init[i].z}`,
-    //   );
-    // }
-
     this.setState({ colors: rgb }, this.updatePlot);
   };
 
   handleSortColorsLive = () => {
-    this.state.colors
-      .quickSortCoordinatesLive(null, this.updateColors)
-      .then(() => console.log("success!"));
+    // this.state.colors
+    //   .quickSortCoordinatesLive(null, this.updateColors)
+    //   .then(() => console.log("success!"));
+    let colors = JSON.stringify(this.state.colors, function(key, val) {
+      if (typeof val === "function") {
+        return val.toString();
+      }
+      return val;
+    });
+
+    this.socket.emit("start calculation", {
+      colors,
+    });
   };
 
   updateColors = colors => this.setState({ colors }, this.updatePlot);
@@ -92,7 +109,6 @@ export default class BasicQS extends Component {
 
   updatePlot = () => {
     let colors = this.state.colors;
-
     plotly.animate(
       "graphDiv",
       {
